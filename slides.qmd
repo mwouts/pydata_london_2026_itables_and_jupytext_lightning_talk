@@ -1,0 +1,522 @@
+---
+title: "ITables & Jupytext"
+format:
+  revealjs:
+    theme: [white, custom.scss]
+    output-file: index.html
+    width: 1100
+    height: 620
+    hash: true
+    slide-number: c/t
+    center: false
+    background-color: "#f5f6fa"
+    code-line-numbers: false
+    template-partials:
+      - title-slide.html
+    include-after-body: timer.html
+resources:
+  - qr/
+execute:
+  echo: false
+---
+
+```{python}
+import qrcode
+from pathlib import Path
+
+Path("qr").mkdir(exist_ok=True)
+for name, url in {
+    "itables":      "https://github.com/mwouts/itables",
+    "datatables":   "https://github.com/AllanJard",
+    "jupytext":     "https://jupytext.org",
+    "linkedin":     "https://linkedin.com/in/marc-wouts",
+    "presentation": "https://mwouts.github.io/pydata_london_2026_itables_and_jupytext_lightning_talk/",
+}.items():
+    qr = qrcode.QRCode(border=2, error_correction=qrcode.constants.ERROR_CORRECT_L)
+    qr.add_data(url)
+    qr.make(fit=True)
+    qr.make_image(fill_color="black", back_color="white").save(f"qr/{name}.png")
+```
+
+## When and How to use ITables
+
+:::: {.columns}
+
+::: {.column width="65%"}
+- Tired of using `df.head()`?
+- Want to see more rows and columns of `df`?
+- Looking for interactivity?
+:::
+
+::: {.column width="35%"}
+> ITables is just about *display*.
+>
+> Pandas and Polars calculations are unaffected.
+:::
+
+<br>
+
+::::
+
+````{=html}
+<div class="jt-formats" id="it-formats">
+  <div class="jt-tablist" role="tablist">
+    <button class="jt-tab jt-active" onclick="itSwitch(0)">Notebook Mode</button>
+    <button class="jt-tab" onclick="itSwitch(1)">Widget</button>
+    <button class="jt-tab" onclick="itSwitch(2)">Streamlit</button>
+    <button class="jt-tab" onclick="itSwitch(3)">Dash</button>
+    <button class="jt-tab" onclick="itSwitch(4)">HTML</button>
+  </div>
+
+  <div class="jt-panel jt-active" id="it-0">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">notebook.py</span></div>
+      <pre class="jt-pre"><code>import itables
+
+itables.init_notebook_mode()</code></pre>
+    </div>
+    <ul class="jt-note-list">
+      <li>Works in JupyterLab, Notebook, Google Colab, VS Code, Quarto.</li>
+      <li>Turns every <code>df</code> into an interactive datatable.</li>
+      <li>Compatible with <code>nbconvert --to html</code>.</li>
+    </ul>
+  </div>
+
+  <div class="jt-panel" id="it-1">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">notebook.py</span></div>
+      <pre class="jt-pre"><code>from itables.widget import ITable
+
+ITable(df)</code></pre>
+    </div>
+    <p class="jt-note">Works in Jupyter, Marimo, Shiny and Panel.</p>
+  </div>
+
+  <div class="jt-panel" id="it-2">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">app.py</span></div>
+      <pre class="jt-pre"><code>from itables.streamlit import interactive_table
+
+interactive_table(df)</code></pre>
+    </div>
+    <p class="jt-note">Drop-in for <code>st.dataframe</code> — full DataTables features in Streamlit.</p>
+  </div>
+
+  <div class="jt-panel" id="it-3">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">app.py</span></div>
+      <pre class="jt-pre"><code>from itables.dash import ITable
+
+ITable(df)</code></pre>
+    </div>
+    <p class="jt-note">ITables component for Dash apps.</p>
+  </div>
+
+  <div class="jt-panel" id="it-4">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">report.py</span></div>
+      <pre class="jt-pre"><code>from itables import to_html_datatable
+
+html = to_html_datatable(df)</code></pre>
+    </div>
+    <p class="jt-note">Export a standalone HTML file with a fully interactive table — no server required.</p>
+  </div>
+</div>
+
+<script>
+function itSwitch(idx) {
+  document.querySelectorAll('#it-formats .jt-tab').forEach(function(t, i) {
+    t.classList.toggle('jt-active', i === idx);
+  });
+  document.querySelectorAll('#it-formats .jt-panel').forEach(function(p, i) {
+    p.classList.toggle('jt-active', i === idx);
+  });
+}
+</script>
+````
+
+## A Pandas DataFrame rendered with ITables
+
+:::: {.columns}
+
+::: {.column .side-notes width="20%"}
+<br>
+
+**By default**
+
+- Paging
+- Sorting
+- Searching
+- Horizontal scroll
+
+**Advanced options**
+
+- Caption
+- CSV and Excel export
+- Advanced filtering
+- Fixed columns, etc
+:::
+
+::: {.column width="80%"}
+```{python}
+from IPython.display import display, HTML
+
+display(HTML("<style>.dt-container { font-size: medium; }</style>"))
+
+from itables.sample_dfs import get_countries
+import itables
+df = get_countries()
+itables.show(df)
+```
+:::
+
+::::
+
+
+## Share it. Star it. Sponsor Allan.
+
+::: {.eyebrow}
+ITables is a Python wrapper for datatables.net
+:::
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**ITables**
+
+- MIT license — free to use anywhere
+- <span id="itables-stars">963</span> ⭐ — I do this for fun, star the repo!
+
+```{=html}
+<div class="qr-wrap">
+  <a href="https://github.com/mwouts/itables" target="_blank">
+    <img src="qr/itables.png" alt="ITables GitHub QR" class="qr-code">
+  </a>
+  <a href="https://github.com/mwouts/itables" target="_blank" class="qr-label">github.com/mwouts/itables</a>
+</div>
+```
+:::
+
+::: {.column width="50%"}
+**datatables.net**
+
+- MIT license — free to use anywhere
+- <span id="datatables-stars">7410</span> ⭐ — Allan does this for a living — sponsor him!
+
+```{=html}
+<div class="qr-wrap">
+  <a href="https://github.com/AllanJard" target="_blank">
+    <img src="qr/datatables.png" alt="Sponsor Allan QR" class="qr-code">
+  </a>
+  <a href="https://github.com/AllanJard" target="_blank" class="qr-label">github.com/AllanJard</a>
+</div>
+```
+:::
+
+::::
+
+
+## Jupytext
+
+::: {.eyebrow}
+Jupyter Notebooks become `.py` or `.md` files (and vice versa)
+:::
+
+With Jupytext installed, any of these files becomes a notebook in Jupyter 🪄 (right click, _open with notebook_)
+
+````{=html}
+<div class="jt-formats" id="jt-formats">
+  <div class="jt-tablist" role="tablist">
+    <button class="jt-tab jt-active" onclick="jtSwitch(0)">py:percent</button>
+    <button class="jt-tab" onclick="jtSwitch(1)">py:light</button>
+    <button class="jt-tab" onclick="jtSwitch(2)">py:marimo</button>
+    <button class="jt-tab" onclick="jtSwitch(3)">Markdown</button>
+    <button class="jt-tab" onclick="jtSwitch(4)">MyST</button>
+    <button class="jt-tab" onclick="jtSwitch(5)">Quarto</button>
+    <button class="jt-tab" onclick="jtSwitch(6)">Pandoc</button>
+  </div>
+
+  <div class="jt-panel jt-active" id="jt-0">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">notebook.py</span></div>
+      <pre class="jt-pre"><code># %% [markdown]
+# # Analysis
+# A quick look at the data.
+
+# %%
+import pandas as pd
+df = pd.read_csv("data.csv")
+df.describe()</code></pre>
+    </div>
+    <p class="jt-note">30+ languages supported. Works in VS Code, PyCharm, Spyder...</p>
+  </div>
+
+  <div class="jt-panel" id="jt-1">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">notebook.py</span></div>
+      <pre class="jt-pre"><code># # Analysis
+# A quick look at the data.
+
+import pandas as pd
+df = pd.read_csv("data.csv")
+df.describe()</code></pre>
+    </div>
+    <p class="jt-note">Minimal cell markers</p>
+  </div>
+
+  <div class="jt-panel" id="jt-2">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">notebook.py</span></div>
+      <pre class="jt-pre"><code>import marimo
+
+__generated_with = "0.23.8"
+app = marimo.App()
+
+
+@app.cell
+def _():
+    import marimo as mo
+    return (mo,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Analysis
+    A quick look at the data.
+    """)
+    return
+
+
+@app.cell
+def _():
+    import pandas as pd
+    df = pd.read_csv("data.csv")
+    df.describe()
+    return
+
+
+if __name__ == "__main__":
+    app.run()</code></pre>
+    </div>
+  </div>
+
+  <div class="jt-panel" id="jt-3">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">notebook.md</span></div>
+      <pre class="jt-pre"><code># Analysis
+
+A quick look at the data.
+
+```python
+import pandas as pd
+df = pd.read_csv("data.csv")
+df.describe()
+```</code></pre>
+    </div>
+    <p class="jt-note">Best for documentation-first notebooks — GitHub Markdown syntax.</p>
+  </div>
+
+  <div class="jt-panel" id="jt-4">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">notebook.myst.md</span></div>
+      <pre class="jt-pre"><code># Analysis
+
+A quick look at the data.
+
+```&#123;code-cell&#125; ipython3
+import pandas as pd
+df = pd.read_csv("data.csv")
+df.describe()
+```</code></pre>
+    </div>
+    <p class="jt-note">Best for rich technical docs &amp; Jupyter Book — directives, cross-refs and more.</p>
+  </div>
+
+  <div class="jt-panel" id="jt-5">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">notebook.qmd</span></div>
+      <pre class="jt-pre"><code>---
+title: Analysis
+---
+
+A quick look at the data.
+
+```&#123;python&#125;
+import pandas as pd
+df = pd.read_csv("data.csv")
+df.describe()
+```</code></pre>
+    </div>
+    <p class="jt-note">For multi-language scientific publishing — Python, R, Julia and more, rendered by the Quarto system.</p>
+  </div>
+
+  <div class="jt-panel" id="jt-6">
+    <div class="jt-card">
+      <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">notebook.pandoc.md</span></div>
+      <pre class="jt-pre"><code>---
+jupyter:
+  nbformat: 4
+  nbformat_minor: 5
+---
+
+::: {#cell-1 .cell .markdown}
+# Analysis
+
+A quick look at the data.
+:::
+
+::: {#cell-2 .cell .code}
+``` python
+import pandas as pd
+df = pd.read_csv("data.csv")
+df.describe()
+```
+:::</code></pre>
+    </div>
+  </div>
+</div>
+
+<style>
+.jt-formats { font-family: inherit; }
+.jt-tablist {
+  display: flex; gap: 2px; flex-wrap: wrap;
+  border-bottom: 2px solid #d0d4e8; margin-bottom: 10px;
+}
+.jt-tab {
+  background: none; border: none;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+  padding: 6px 14px; font-size: 0.9rem; font-family: inherit;
+  cursor: pointer; color: #5a6080;
+  transition: color .15s, border-color .15s;
+}
+.jt-tab:hover { color: #1a1d2e; }
+.jt-tab.jt-active { color: #6b58f0; border-bottom-color: #6b58f0; font-weight: 600; }
+.jt-panel { display: none; }
+.jt-panel.jt-active { display: block; }
+.jt-card { background: #1e2030; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+.jt-bar { display: flex; align-items: center; gap: 5px; padding: 7px 14px; background: #2a2f42; }
+.jt-dot { width: 9px; height: 9px; border-radius: 50%; background: #4a5070; }
+.jt-dot:nth-child(1) { background: #ff5f57; }
+.jt-dot:nth-child(2) { background: #febc2e; }
+.jt-dot:nth-child(3) { background: #28c840; }
+.jt-fname { margin-left: 8px; font-size: 0.82rem; font-family: monospace; color: #8892b0; }
+.jt-formats .jt-pre {
+  margin: 0 !important; padding: 12px 18px !important;
+  background: none !important; border: none !important;
+  box-shadow: none !important; width: auto !important;
+  font-size: 0.78rem !important; line-height: 1.6 !important;
+  overflow: auto; max-height: 300px; color: #cdd6f4; border-radius: 0 !important;
+}
+.jt-formats .jt-pre code {
+  background: none !important; color: inherit !important;
+  font-size: inherit !important; padding: 0 !important;
+}
+.jt-note { font-size: 0.95rem; color: #5a6080; margin: 4px 0 0 !important; line-height: 1.5; }
+.jt-note-list { margin: 6px 0 0 !important; }
+</style>
+
+<script>
+function jtSwitch(idx) {
+  document.querySelectorAll('#jt-formats .jt-tab').forEach(function(t, i) {
+    t.classList.toggle('jt-active', i === idx);
+  });
+  document.querySelectorAll('#jt-formats .jt-panel').forEach(function(p, i) {
+    p.classList.toggle('jt-active', i === idx);
+  });
+}
+</script>
+````
+
+## Paired notebooks
+
+::: {.eyebrow}
+Jupytext · one config line
+:::
+
+:::: {.columns}
+
+::: {.column width="40%"}
+````{=html}
+<div class="jt-card">
+  <div class="jt-bar"><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-dot"></span><span class="jt-fname">jupytext.toml</span></div>
+  <pre class="jt-pre"><code>formats = "ipynb,py:percent"</code></pre>
+</div>
+````
+This pairs every `.ipynb` with a `.py` notebook. Both stay in sync — the `.ipynb` keeps the **outputs**, the `.py` holds the **inputs** and takes precedence.
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="55%"}
+- Notebooks in **version control** — just clean `.py` diffs
+- Edit with **any text editor**, IDE, or code review tool
+- Text files are **1,000× smaller** than `.ipynb`
+
+<br>
+
+*And with AI, this becomes a game-changer.*
+:::
+
+::::
+
+---
+
+## Text notebooks × AI
+
+::: {.eyebrow}
+Jupytext · AI workflow
+:::
+
+::: {.absolute top="20px" right="60px"}
+<img src="https://raw.githubusercontent.com/mwouts/jupytext/f4f5a0f7053568a72362ac70936c3bc6fabda6a9/website/public/logo.png" alt="Jupytext" style="height:120px; width:auto;">
+:::
+
+:::: {.columns}
+
+::: {.column width="57%"}
+Your paired `.py` files are tiny — small enough for AI to **read your whole collection** at once.
+
+- AI gets an instant overview of all your work
+- AI writes new notebooks *in your style*
+:::
+
+::: {.column width="5%"}
+:::
+
+::: {.column width="38%"}
+**Jupytext in 2026** ✨
+
+- <span id="jupytext-stars">7,2k</span> ⭐ · 3M downloads/month
+- 8 years old 🎂 this summer!
+:::
+
+::::
+
+::: {.absolute bottom="48px" left="60px" right="60px"}
+```{=html}
+<p style="text-align:center; font-size:1.6rem; font-weight:700; color:#1a1d2e; margin:0 0 14px;">Thank you!</p>
+<div class="qr-row">
+  <div class="qr-wrap">
+    <a href="https://mwouts.github.io/pydata_london_2026_itables_and_jupytext_lightning_talk/" target="_blank">
+      <img src="qr/presentation.png" alt="Presentation QR" class="qr-code">
+    </a>
+    <a href="https://mwouts.github.io/pydata_london_2026_itables_and_jupytext_lightning_talk/" target="_blank" class="qr-label">these slides</a>
+  </div>
+  <div class="qr-wrap">
+    <a href="https://jupytext.org" target="_blank">
+      <img src="qr/jupytext.png" alt="jupytext.org QR" class="qr-code">
+    </a>
+    <a href="https://jupytext.org" target="_blank" class="qr-label">jupytext.org</a>
+  </div>
+  <div class="qr-wrap">
+    <a href="https://linkedin.com/in/marc-wouts" target="_blank">
+      <img src="qr/linkedin.png" alt="LinkedIn QR" class="qr-code">
+    </a>
+    <a href="https://linkedin.com/in/marc-wouts" target="_blank" class="qr-label">linkedin/marc-wouts</a>
+  </div>
+</div>
+```
+:::
+
+
+

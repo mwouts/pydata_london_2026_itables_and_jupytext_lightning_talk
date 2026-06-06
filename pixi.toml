@@ -1,0 +1,20 @@
+[workspace]
+authors = ["Marc Wouts <marc.wouts@gmail.com>"]
+channels = ["conda-forge"]
+name = "pydata_london_2026_itables_and_jupytext_lightning_talk"
+platforms = ["osx-64"]
+version = "0.1.0"
+
+[tasks]
+build   = "quarto render slides.qmd --output-dir _site"
+preview = "quarto preview slides.qmd"
+
+[dependencies]
+quarto  = ">=1.9.38,<2"
+python  = ">=3.11"
+itables = ">=2.8.0,<3"
+pandas  = ">=3.0.3,<4"
+jupyter = ">=1.1.1,<2"
+ipykernel = ">=7.2.0,<8"
+qrcode = ">=7"
+pillow = ">=10"

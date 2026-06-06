@@ -1,0 +1,172 @@
+/*-- scss:defaults --*/
+
+/*-- scss:rules --*/
+
+/* ── custom theme: ITables & Jupytext — PyData London 2026 ── */
+
+:root {
+  --accent:   #6b58f0;
+  --accent2:  #0284c7;
+  --surface2: #eef0f8;
+  --text:     #1a1d2e;
+  --muted:    #5a6080;
+}
+
+/* ── background ── */
+body.reveal-viewport { background-color: #f5f6fa; }
+
+.reveal #title-slide { text-align: left; }
+
+.reveal .slides section {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #d0d4e8;
+  padding: 48px 60px !important;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+/* ── headings ── */
+.reveal h1, .reveal h2, .reveal h3 {
+  text-transform: none;
+  letter-spacing: normal;
+  text-shadow: none;
+  color: var(--text);
+}
+.reveal h1 { font-size: 3.4rem; font-weight: 800; line-height: 1.15; }
+.reveal h2 { font-size: 2.1rem; font-weight: 700; line-height: 1.2;  margin-bottom: 4px; }
+.reveal h3 { font-size: 1.3rem; font-weight: 700; color: var(--accent2); }
+
+/* ── eyebrow (appears just after the h2, visually acts as a subtitle label) ── */
+.reveal .eyebrow {
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: -6px;
+  margin-bottom: 10px;
+}
+
+/* ── body text ── */
+.reveal p  { font-size: 1.2rem; line-height: 1.7; color: #3a4060; }
+.reveal strong { color: var(--text); }
+
+/* ── lists ── */
+.reveal ul { list-style: none; padding-left: 0; }
+.reveal ul li { font-size: 1.2rem; line-height: 1.6; color: #3a4060; margin-bottom: 8px; }
+.reveal ul li::before { content: "→ "; color: var(--accent); font-weight: 700; }
+
+/* suppress arrows inside panel-tabset nav tabs only */
+.reveal .panel-tabset-tabby li::before { content: none; }
+
+/* ── code ── */
+.reveal code {
+  background: var(--surface2);
+  color: var(--accent2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: .88em;
+}
+.reveal pre {
+  background: var(--surface2) !important;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px !important;
+  box-shadow: none !important;
+  width: 100%;
+  font-size: .5em !important;
+}
+.reveal pre code {
+  background: none !important;
+  color: #2a3470;
+  font-size: .88rem;
+  line-height: 1.65;
+  padding: 0;
+}
+
+/* ── blockquote ── */
+.reveal blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--surface2);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 18px;
+  box-shadow: none;
+  width: 100%;
+  font-style: italic;
+}
+.reveal blockquote p { font-size: .97rem; color: #2a3470; }
+
+/* ── logo bar (title slide) ── */
+.logo-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.logo-bar img { height: 80px; width: auto; }
+.logo-bar .logo-jupytext { height: 120px; }
+
+/* ── small side-notes column ── */
+.reveal .columns:has(.side-notes) { align-items: center; }
+.reveal .side-notes p,
+.reveal .side-notes ul li { font-size: 1rem; }
+.reveal .side-notes ul { margin-left: 0; padding-left: 0.8rem; }
+.reveal .side-notes ul li { margin-bottom: 4px; }
+
+/* ── two-column layout (title slide) ── */
+.title-cols { display: flex; gap: 48px; align-items: center; }
+.col-content { flex: 1; }
+.col-content p, .col-content ul li { font-size: 1.5rem; }
+
+.author-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.qr-wrap { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.qr-code { width: 140px; height: 140px; border-radius: 6px; }
+.qr-label {
+  font-size: .7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  text-decoration: none;
+}
+.qr-label:hover { color: var(--accent); }
+.author-name { font-size: 1.15rem; color: var(--muted); }
+
+/* ── tabs (Quarto panel-tabset) ── */
+.reveal .panel-tabset > .nav-tabs {
+  border-bottom: 1px solid #d0d4e8;
+  gap: 2px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  padding: 0;
+}
+.reveal .panel-tabset .nav-link {
+  color: var(--muted);
+  font-size: .85rem;
+  font-family: inherit;
+  padding: 7px 16px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+  margin-bottom: -1px;
+  transition: color .15s, border-color .15s;
+}
+.reveal .panel-tabset .nav-link:hover   { color: var(--text); }
+.reveal .panel-tabset .nav-link.active  { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── side-by-side QR codes ── */
+.qr-row { display: flex; gap: 96px; justify-content: center; }
+
+/* ── pandas default table (df-scroll output) ── */
+.df-scroll { overflow: auto; max-height: 400px; font-size: .85rem; }
+.df-scroll table { border-collapse: collapse; width: 100%; }
+.df-scroll th, .df-scroll td { padding: 4px 10px; border: 1px solid #d0d4e8; white-space: nowrap; }
+.df-scroll thead th { background: var(--surface2); position: sticky; top: 0; }

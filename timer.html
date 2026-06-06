@@ -1,0 +1,44 @@
+<div id="countdown"
+  title="Click to start / pause · Double-click to reset"
+  style="position:fixed; bottom:18px; left:50px; z-index:9999;
+         font-family:monospace; font-size:1.05rem; font-weight:700;
+         color:#5a6080; background:rgba(255,255,255,0.88);
+         border:1px solid #d0d4e8; border-radius:6px;
+         padding:4px 11px; cursor:pointer; user-select:none;">5:00</div>
+<script>
+(function() {
+  var TOTAL = 300, remaining = TOTAL, running = false, timer = null;
+  var el = document.getElementById('countdown');
+  function fmt(s) { return Math.floor(s/60) + ':' + ('0' + (s%60)).slice(-2); }
+  function tick() {
+    if (remaining <= 0) {
+      clearInterval(timer); running = false;
+      el.textContent = '0:00'; el.style.color = '#ef4444'; return;
+    }
+    remaining--;
+    el.textContent = fmt(remaining);
+    el.style.color = remaining < 60 ? '#ef4444' : '#5a6080';
+  }
+  el.addEventListener('click', function() {
+    if (running) { clearInterval(timer); running = false; }
+    else { timer = setInterval(tick, 1000); running = true; }
+  });
+  el.addEventListener('dblclick', function(e) {
+    e.stopPropagation();
+    clearInterval(timer); running = false;
+    remaining = TOTAL; el.textContent = fmt(TOTAL); el.style.color = '#5a6080';
+  });
+})();
+</script>
+<script>
+async function fetchStars(repo, id) {
+  try {
+    const r = await fetch(`https://api.github.com/repos/${repo}`);
+    const d = await r.json();
+    document.getElementById(id).textContent = d.stargazers_count.toLocaleString();
+  } catch(e) {}
+}
+fetchStars("mwouts/itables", "itables-stars");
+fetchStars("mwouts/jupytext", "jupytext-stars");
+fetchStars("DataTables/DataTables", "datatables-stars");
+</script>
