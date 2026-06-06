@@ -2,7 +2,7 @@
 authors = ["Marc Wouts <marc.wouts@gmail.com>"]
 channels = ["conda-forge"]
 name = "pydata_london_2026_itables_and_jupytext_lightning_talk"
-platforms = ["osx-64"]
+platforms = ["osx-64", "linux-64"]
 version = "0.1.0"
 
 [tasks]
