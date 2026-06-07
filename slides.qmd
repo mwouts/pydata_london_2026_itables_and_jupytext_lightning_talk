@@ -201,7 +201,7 @@ ITables is a Python wrapper for datatables.net
 **datatables.net**
 
 - MIT license — free to use anywhere
-- <span id="datatables-stars">7410</span> ⭐ — Allan does this for a living — sponsor him!
+- <span id="datatables-stars">7,409</span> ⭐ — Allan does this for a living — sponsor him!
 
 ```{=html}
 <div class="qr-wrap">
@@ -486,7 +486,7 @@ Your paired `.py` files are tiny — small enough for AI to **read your whole co
 ::: {.column width="38%"}
 **Jupytext in 2026** ✨
 
-- <span id="jupytext-stars">7,2k</span> ⭐ · 3M downloads/month
+- <span id="jupytext-stars">7,182</span> ⭐ · 3M downloads/month
 - 8 years old 🎂 this summer!
 - VS Code extension: [Jupytext Sync](https://marketplace.visualstudio.com/items?itemName=caenrigen.jupytext-sync) by Victor Negîrneac
 :::
