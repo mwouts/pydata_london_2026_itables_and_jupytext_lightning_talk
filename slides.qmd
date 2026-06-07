@@ -4,8 +4,8 @@ format:
   revealjs:
     theme: [white, custom.scss]
     output-file: index.html
-    width: 1100
-    height: 620
+    width: 1145
+    height: 650
     hash: true
     slide-number: c/t
     center: false
@@ -488,6 +488,7 @@ Your paired `.py` files are tiny — small enough for AI to **read your whole co
 
 - <span id="jupytext-stars">7,2k</span> ⭐ · 3M downloads/month
 - 8 years old 🎂 this summer!
+- VS Code extension: [Jupytext Sync](https://marketplace.visualstudio.com/items?itemName=caenrigen.jupytext-sync) by Victor Negîrneac
 :::
 
 ::::
